@@ -109,18 +109,30 @@ const Directory = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-2">
-               {group.animeList.map((anime) => (
-                  <Link 
-                    key={anime.animeId} 
-                    to={`/anime/${anime.animeId}`}
-                    className="group flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5"
-                  >
-                     <div className="w-1.5 h-1.5 rounded-full bg-gray-700 group-hover:bg-primary transition-colors flex-shrink-0"></div>
-                     <span className="text-sm text-gray-400 group-hover:text-white transition-colors truncate" title={anime.title}>
-                        {anime.title}
-                     </span>
-                  </Link>
-               ))}
+               {group.animeList.map((anime) => {
+                  const isOngoing = anime.title.toLowerCase().includes('on-going') || anime.title.toLowerCase().includes('ongoing');
+                  const cleanTitle = anime.title.replace(/\[?on-going\]?/i, '').replace(/\[?ongoing\]?/i, '').trim();
+
+                  return (
+                    <Link 
+                      key={anime.animeId} 
+                      to={`/anime/${anime.animeId}`}
+                      className="group flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5"
+                    >
+                       <div className={`w-1.5 h-1.5 rounded-full transition-colors flex-shrink-0 ${isOngoing ? 'bg-primary animate-pulse' : 'bg-gray-700 group-hover:bg-primary'}`}></div>
+                       <div className="flex items-center gap-2 overflow-hidden">
+                          <span className="text-sm text-gray-400 group-hover:text-white transition-colors truncate" title={cleanTitle}>
+                             {cleanTitle}
+                          </span>
+                          {isOngoing && (
+                             <span className="text-[10px] font-black text-primary uppercase tracking-tighter flex-shrink-0 bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">
+                                On-Going
+                             </span>
+                          )}
+                       </div>
+                    </Link>
+                  );
+               })}
             </div>
           </div>
         ))}

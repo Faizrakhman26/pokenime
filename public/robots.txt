@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Menghubungkan Google ke file Sitemap Anda
+Sitemap: https://pokenime.izzprjct.eu.org/sitemap.xml

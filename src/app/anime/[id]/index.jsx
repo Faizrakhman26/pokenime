@@ -220,10 +220,8 @@ const AnimeDetail = () => {
           </h2>
           <div className="text-gray-300 text-sm md:text-base leading-relaxed space-y-4">
              {/* SEO Boilerplate Paragraph */}
-             <p className="text-gray-400">
-                Sedang mencari link <strong>nonton anime {data.title} sub indo</strong> gratis? Anda berada di tempat yang tepat. 
-                Pokenime menyediakan layanan streaming anime <strong>{data.title}</strong> dengan kualitas resolusi lengkap mulai dari HD 1080p, 720p, hingga paket hemat 480p dan 360p.
-                Simak sinopsis lengkap, jadwal rilis, dan daftar episode terbaru di bawah ini.
+             <p className="text-gray-400 text-xs md:text-sm italic border-b border-white/5 pb-4 mb-4">
+                Streaming dan nonton anime <strong>{data.title}</strong> Subtitle Indonesia dengan kualitas HD 1080p, 720p, hingga 480p yang hemat kuota. Berikut adalah sinopsis lengkap dan alur ceritanya:
              </p>
              
              {/* Actual API Synopsis */}
