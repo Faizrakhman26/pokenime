@@ -11,8 +11,10 @@ const Watch = () => {
   const [currentStreamUrl, setCurrentStreamUrl] = useState('');
   const [activeServer, setActiveServer] = useState(null);
   
-  // State untuk melacak kualitas mana yang sedang dibuka dropdown-nya
+  // State untuk melacak kualitas mana yang sedang dibuka dropdown-nya (Server)
   const [openQuality, setOpenQuality] = useState(null);
+  // State untuk melacak kualitas download yang terbuka
+  const [openDownloadQuality, setOpenDownloadQuality] = useState(null);
 
   useEffect(() => {
     const fetchEpisodeDetail = async () => {
@@ -21,13 +23,10 @@ const Watch = () => {
         const response = await animeService.getWatchEpisode(episode);
         if (response.data.ok) {
           const episodeData = response.data.data;
+          
+          // Set default stream URL
           setData(episodeData);
           setCurrentStreamUrl(episodeData.defaultStreamingUrl);
-          
-          // Set default quality dropdown yang terbuka ke yang pertama (biasanya 360p atau SD)
-          if (episodeData.server?.qualities?.length > 0) {
-            setOpenQuality(episodeData.server.qualities[0].title);
-          }
         } else {
           setError('Episode tidak ditemukan');
         }
@@ -50,6 +49,8 @@ const Watch = () => {
       if (response.data.ok) {
         const newUrl = response.data.data.url;
         setCurrentStreamUrl(newUrl);
+        // Otomatis tutup dropdown setelah memilih server
+        setOpenQuality(null);
       }
     } catch (err) {
       console.error('Error fetching server stream:', err);
@@ -62,6 +63,14 @@ const Watch = () => {
         setOpenQuality(null); // Tutup jika diklik lagi
     } else {
         setOpenQuality(qualityTitle); // Buka yang baru
+    }
+  };
+  
+  const toggleDownloadQuality = (qualityTitle) => {
+    if (openDownloadQuality === qualityTitle) {
+        setOpenDownloadQuality(null);
+    } else {
+        setOpenDownloadQuality(qualityTitle);
     }
   };
 
@@ -187,27 +196,75 @@ const Watch = () => {
                  </Link>
             </div>
 
-            {/* Download Links */}
+            {/* Mobile Episode List (Visible on Mobile/Tablet, Above Download) */}
+            <div className="lg:hidden bg-gray-900/50 rounded-2xl border border-white/5 overflow-hidden mb-6">
+                <div className="p-4 bg-white/5 border-b border-white/5">
+                   <h3 className="font-bold text-white">Daftar Episode</h3>
+                </div>
+                <div className="max-h-[280px] overflow-y-auto custom-scrollbar overscroll-y-contain">
+                   {data.info.episodeList.map((ep) => (
+                      <Link 
+                        key={ep.episodeId}
+                        to={`/watch/${ep.episodeId}`}
+                        className={`flex items-center gap-3 p-3 hover:bg-white/5 border-b border-white/5 transition-all ${
+                           episode === ep.episodeId ? 'bg-primary/10 border-l-4 border-l-primary' : ''
+                        }`}
+                      >
+                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${
+                            episode === ep.episodeId ? 'bg-primary text-white' : 'bg-gray-800 text-gray-400'
+                         }`}>
+                            {ep.eps}
+                         </div>
+                         <p className={`text-sm font-medium line-clamp-1 ${
+                            episode === ep.episodeId ? 'text-primary' : 'text-gray-300'
+                         }`}>
+                            Episode {ep.eps}
+                         </p>
+                      </Link>
+                   ))}
+                </div>
+            </div>
+
+            {/* Download Links (Accordion) */}
             <div className="bg-gray-900/50 p-6 rounded-2xl border border-white/5">
                 <h3 className="text-xl font-bold text-white mb-6">Download Episode</h3>
                 <div className="space-y-3">
                    {data.downloadUrl.qualities.map((quality) => (
-                      <div key={quality.title} className="bg-black/20 rounded-xl overflow-hidden border border-white/5">
-                         <div className="flex items-center justify-between p-3 bg-white/5">
-                            <span className="font-bold text-sm text-primary">{quality.title} <span className="text-gray-500 text-[10px] ml-2 font-normal">({quality.size})</span></span>
-                         </div>
-                         <div className="flex flex-wrap gap-2 p-3">
-                            {quality.urls.map((dl) => (
-                               <a 
-                                  key={dl.title} 
-                                  href={dl.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="px-3 py-1.5 bg-gray-800 hover:bg-green-600/20 hover:text-green-500 text-[11px] font-bold rounded-lg transition-all border border-transparent hover:border-green-500/30"
-                               >
-                                  {dl.title}
-                               </a>
-                            ))}
+                      <div key={quality.title} className="bg-black/20 rounded-xl overflow-hidden border border-white/5 transition-all">
+                         <button 
+                            onClick={() => toggleDownloadQuality(quality.title)}
+                            className={`w-full flex items-center justify-between p-4 transition-colors ${
+                               openDownloadQuality === quality.title ? 'bg-white/10' : 'bg-transparent hover:bg-white/5'
+                            }`}
+                         >
+                            <span className="font-bold text-sm text-primary flex items-center gap-2">
+                               {quality.title} 
+                               <span className="text-gray-500 text-[10px] font-normal px-2 py-0.5 bg-white/5 rounded-full">
+                                  {quality.size}
+                               </span>
+                            </span>
+                            <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openDownloadQuality === quality.title ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                         </button>
+                         
+                         {/* Dropdown Content */}
+                         <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                            openDownloadQuality === quality.title ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                         }`}>
+                             <div className="flex flex-wrap gap-2 p-4 border-t border-white/5 bg-black/10">
+                                {quality.urls.map((dl) => (
+                                   <a 
+                                      key={dl.title} 
+                                      href={dl.url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="px-4 py-2 bg-gray-800 hover:bg-green-600 hover:text-white text-xs font-bold rounded-lg transition-all border border-white/5 hover:border-green-500 shadow-sm hover:shadow-green-500/20"
+                                   >
+                                      {dl.title}
+                                   </a>
+                                ))}
+                             </div>
                          </div>
                       </div>
                    ))}
@@ -215,13 +272,13 @@ const Watch = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="lg:w-[30%]">
-             <div className="sticky top-24 bg-gray-900/50 rounded-2xl border border-white/5 overflow-hidden">
-                <div className="p-4 bg-white/5 border-b border-white/5">
+          {/* Sidebar (Desktop Only) */}
+          <div className="hidden lg:block lg:w-[30%]">
+             <div className="sticky top-24 bg-gray-900/50 rounded-2xl border border-white/5 overflow-hidden flex flex-col max-h-[calc(100vh-8rem)]">
+                <div className="p-4 bg-white/5 border-b border-white/5 flex-shrink-0">
                    <h3 className="font-bold text-white">Daftar Episode</h3>
                 </div>
-                <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
+                <div className="overflow-y-auto custom-scrollbar flex-grow overscroll-y-contain">
                    {data.info.episodeList.map((ep) => (
                       <Link 
                         key={ep.episodeId}

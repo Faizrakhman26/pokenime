@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Ganti URL ini dengan URL API backend Anda yang sebenarnya
-const BASE_URL = 'https://www.sankavollerei.com/anime'; 
+// Gunakan environment variable untuk URL API
+const BASE_URL = import.meta.env.VITE_API_BASE_URL; 
 
 const api = axios.create({
   baseURL: BASE_URL,

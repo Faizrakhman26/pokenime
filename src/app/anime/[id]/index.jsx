@@ -63,66 +63,115 @@ const AnimeDetail = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Section: Info & Poster */}
-        <div className="flex flex-row gap-4 md:gap-8 mb-8 md:mb-12">
-          {/* Poster */}
-          <div className="flex-shrink-0 w-32 sm:w-64 md:w-72">
-             <div className="relative rounded-lg overflow-hidden shadow-2xl border-2 border-white/10 aspect-[3/4]">
+        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[280px_1fr] gap-4 md:gap-12 mb-8 md:mb-12">
+          {/* Poster Column */}
+          <div className="flex flex-col gap-4">
+             <div className="relative rounded-xl overflow-hidden shadow-2xl border border-white/10 aspect-[3/4]">
                 <img 
                   src={data.poster} 
                   alt={data.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-1 right-1 md:top-2 md:right-2 bg-yellow-500 text-black font-bold text-[10px] md:text-sm px-1.5 md:px-3 py-0.5 md:py-1 rounded-full shadow-lg">
+                <div className="absolute top-2 right-2 bg-yellow-500 text-black font-black text-[10px] md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded-lg shadow-xl flex items-center gap-1">
                   ⭐ {data.score || '-'}
                 </div>
              </div>
              {data.batch && (
-                <Link to={`/batch/${data.batch.batchId}`} className="hidden md:block mt-4 w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors">
+                <Link to={`/batch/${data.batch.batchId}`} className="hidden md:flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all hover:shadow-[0_0_20px_rgba(22,163,74,0.4)]">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     Download Batch
                 </Link>
              )}
           </div>
 
-          {/* Details */}
-          <div className="flex-grow min-w-0">
-            <h1 className="text-xl sm:text-3xl md:text-5xl font-bold mb-1 md:mb-4 leading-tight line-clamp-3 md:line-clamp-none">{data.title}</h1>
-            <h2 className="text-sm md:text-xl text-gray-400 mb-4 md:mb-6 italic line-clamp-1">{data.japanese}</h2>
+          {/* Content Column */}
+          <div className="flex flex-col justify-center min-w-0">
+            <h1 className="text-xl md:text-5xl font-black text-white mb-2 md:mb-4 leading-tight tracking-tight">
+              {data.title}
+            </h1>
+            <p className="text-xs md:text-lg text-gray-400 mb-4 md:mb-6 font-medium italic line-clamp-2 md:line-clamp-none">
+              {data.japanese}
+            </p>
 
-            {/* Desktop Details Grid (Tersembunyi di mobile sangat kecil, atau muncul di bawah judul) */}
-            <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-gray-300 mb-8 bg-gray-800/50 p-6 rounded-xl border border-white/5">
-              <p><span className="text-primary font-semibold w-24 inline-block">Status:</span> {data.status}</p>
-              <p><span className="text-primary font-semibold w-24 inline-block">Studio:</span> {data.studios}</p>
-              <p><span className="text-primary font-semibold w-24 inline-block">Rilis:</span> {data.aired}</p>
-              <p><span className="text-primary font-semibold w-24 inline-block">Durasi:</span> {data.duration}</p>
-              <p><span className="text-primary font-semibold w-24 inline-block">Tipe:</span> {data.type}</p>
-              <p><span className="text-primary font-semibold w-24 inline-block">Produser:</span> {data.producers}</p>
-            </div>
-
-            {/* Mobile-only info (tampilan ringkas) */}
-            <div className="flex sm:hidden flex-wrap gap-x-4 gap-y-1 text-[11px] text-gray-400 mb-4">
-               <p><span className="text-primary font-bold">Status:</span> {data.status}</p>
-               <p><span className="text-primary font-bold">Studio:</span> {data.studios}</p>
-               <p><span className="text-primary font-bold">Tipe:</span> {data.type}</p>
+            {/* Desktop Info Grid */}
+            <div className="hidden md:grid grid-cols-2 gap-x-12 gap-y-4 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 mb-8">
+               <div className="space-y-3">
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Status</span>
+                    <span className="text-gray-200 text-sm font-semibold">{data.status}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Studio</span>
+                    <span className="text-gray-200 text-sm font-semibold">{data.studios}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Rilis</span>
+                    <span className="text-gray-200 text-sm font-semibold">{data.aired}</span>
+                  </div>
+               </div>
+               <div className="space-y-3">
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Tipe</span>
+                    <span className="text-gray-200 text-sm font-semibold">{data.type}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Durasi</span>
+                    <span className="text-gray-200 text-sm font-semibold">{data.duration}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                    <span className="text-primary font-bold text-[10px] uppercase tracking-widest">Produser</span>
+                    <span className="text-gray-200 text-sm font-semibold truncate ml-4" title={data.producers}>{data.producers}</span>
+                  </div>
+               </div>
             </div>
 
             {/* Genres */}
-            <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-8">
+            <div className="flex flex-wrap gap-2">
               {data.genreList.map((genre) => (
                 <Link 
                   key={genre.genreId} 
                   to={`/genres/${genre.genreId}`}
-                  className="px-2 py-0.5 md:px-3 md:py-1 bg-white/10 hover:bg-primary text-[10px] md:text-sm rounded-full transition-colors"
+                  className="px-3 py-1 bg-white/5 hover:bg-primary border border-white/10 hover:border-primary text-[10px] md:text-xs font-bold rounded-lg transition-all"
                 >
                   {genre.title}
                 </Link>
               ))}
             </div>
           </div>
+
+          {/* Mobile Info Grid (Full Width below Poster & Title) */}
+          <div className="md:hidden col-span-2 grid grid-cols-1 gap-y-3 bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 mt-2">
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-primary font-bold uppercase tracking-wider">Status</span>
+                <span className="text-gray-200 font-medium">{data.status}</span>
+             </div>
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-primary font-bold uppercase tracking-wider">Studio</span>
+                <span className="text-gray-200 font-medium">{data.studios}</span>
+             </div>
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-primary font-bold uppercase tracking-wider">Tipe</span>
+                <span className="text-gray-200 font-medium">{data.type}</span>
+             </div>
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-primary font-bold uppercase tracking-wider">Durasi</span>
+                <span className="text-gray-200 font-medium">{data.duration}</span>
+             </div>
+             <div className="flex justify-between items-center text-xs">
+                <span className="text-primary font-bold uppercase tracking-wider">Rilis</span>
+                <span className="text-gray-200 font-medium">{data.aired}</span>
+             </div>
+             <div className="flex flex-col gap-1 text-xs pt-2 border-t border-white/5">
+                <span className="text-primary font-bold uppercase tracking-wider">Produser</span>
+                <span className="text-gray-400 leading-tight italic">{data.producers}</span>
+             </div>
+          </div>
         </div>
 
         {/* Batch Button Mobile Only */}
         {data.batch && (
-           <Link to={`/batch/${data.batch.batchId}`} className="md:hidden block mb-8 w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors">
+           <Link to={`/batch/${data.batch.batchId}`} className="md:hidden flex items-center justify-center gap-2 mb-8 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95">
+               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                Download Batch Anime
            </Link>
         )}
@@ -150,32 +199,32 @@ const AnimeDetail = () => {
             </span>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-[320px] sm:max-h-none overflow-y-auto sm:overflow-visible pr-1 sm:pr-0 pb-2 custom-scrollbar">
              {data.episodeList && data.episodeList.length > 0 ? (
                 data.episodeList.map((ep) => (
                    <Link 
                       key={ep.episodeId}
                       to={`/watch/${ep.episodeId}`}
-                      className="group flex items-center gap-3 p-2 bg-gray-800/40 hover:bg-primary/10 rounded-md transition-all border border-white/5 hover:border-primary/30"
+                      className="group flex items-center gap-3 p-3 bg-gray-800/40 hover:bg-primary/10 rounded-xl transition-all border border-white/5 hover:border-primary/30"
                    >
-                      <div className="flex-shrink-0 w-8 h-8 rounded bg-primary/20 flex items-center justify-center text-primary text-xs font-bold group-hover:bg-primary group-hover:text-white transition-colors">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-sm font-black group-hover:bg-primary group-hover:text-white transition-colors shadow-inner">
                          {ep.eps}
                       </div>
                       <div className="flex-grow min-w-0">
-                         <span className="text-xs font-medium text-gray-200 group-hover:text-white line-clamp-1 uppercase tracking-tight">
+                         <span className="text-xs font-bold text-gray-200 group-hover:text-white line-clamp-1 uppercase tracking-tight">
                             Episode {ep.eps}
                          </span>
-                         <span className="block text-[10px] text-gray-500">{ep.date}</span>
+                         <span className="block text-[10px] text-gray-500 font-medium">{ep.date}</span>
                       </div>
-                      <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity pr-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <div className="flex-shrink-0 opacity-40 group-hover:opacity-100 transition-opacity pr-1">
+                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                          </svg>
                       </div>
                    </Link>
                 ))
              ) : (
-                <div className="col-span-full text-center py-10 text-gray-500 bg-gray-800/30 rounded-lg">
+                <div className="col-span-full text-center py-10 text-gray-500 bg-gray-800/30 rounded-2xl border border-dashed border-white/10">
                    Belum ada episode yang tersedia.
                 </div>
              )}

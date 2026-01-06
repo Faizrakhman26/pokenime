@@ -83,15 +83,15 @@ const Search = () => {
             </div>
          ) : results.length > 0 ? (
             <>
-               <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-xl font-bold text-white border-l-4 border-primary pl-4 uppercase tracking-tight">
-                     Hasil Pencarian: <span className="text-gray-400 italic font-medium ml-2">"{query}"</span>
+               <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-0 mb-8">
+                  <h2 className="text-lg md:text-xl font-bold text-white border-l-4 border-primary pl-4 uppercase tracking-tight flex flex-col md:block">
+                     Hasil Pencarian: <span className="text-gray-400 italic font-medium md:ml-2 mt-1 md:mt-0 text-sm md:text-base">"{query}"</span>
                   </h2>
-                  <span className="text-xs text-gray-500 bg-gray-800 px-3 py-1 rounded-full border border-white/5">
+                  <span className="self-start md:self-auto text-[10px] md:text-xs text-gray-500 bg-gray-800 px-3 py-1.5 rounded-full border border-white/5 font-bold tracking-wide">
                      {results.length} Anime Ditemukan
                   </span>
                </div>
-               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                   {results.map((anime) => (
                     <AnimeCard key={anime.animeId} anime={anime} type="search" />
                   ))}

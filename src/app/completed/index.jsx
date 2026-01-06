@@ -80,32 +80,44 @@ const Completed = () => {
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="mt-12 flex justify-center items-center gap-4">
+      {/* Pagination Controls (Responsive) */}
+      <div className="mt-12 flex justify-center items-center gap-6">
         <button 
           onClick={handlePrevPage}
           disabled={page === 1}
-          className={`px-6 py-2 rounded-full font-bold transition-all ${
+          className={`h-10 w-10 md:w-auto md:px-6 flex items-center justify-center rounded-full font-bold transition-all ${
             page === 1 
             ? 'bg-gray-800 text-gray-600 cursor-not-allowed' 
-            : 'bg-gray-800 text-white hover:bg-blue-600'
+            : 'bg-gray-800 text-white hover:bg-blue-600 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)]'
           }`}
+          aria-label="Halaman Sebelumnya"
         >
-          Sebelumnya
+          <span className="hidden md:inline">Sebelumnya</span>
+          <svg className="w-5 h-5 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <span className="text-gray-400 font-bold">
-           Halaman {page} {pagination?.totalPages ? `/ ${pagination.totalPages}` : ''}
-        </span>
+
+        <div className="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-white/5 shadow-inner">
+           <span className="text-white font-black text-sm md:text-base">
+             {page}
+           </span>
+           <span className="text-gray-500 font-bold">/</span>
+           <span className="text-gray-400 font-bold text-sm md:text-base">
+             {pagination?.totalPages || '?'}
+           </span>
+        </div>
+
         <button 
           onClick={handleNextPage}
           disabled={pagination?.hasNextPage === false}
-          className={`px-6 py-2 rounded-full font-bold transition-all ${
+          className={`h-10 w-10 md:w-auto md:px-6 flex items-center justify-center rounded-full font-bold transition-all ${
              pagination?.hasNextPage === false
              ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
-             : 'bg-gray-800 text-white hover:bg-blue-600'
+             : 'bg-gray-800 text-white hover:bg-blue-600 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)]'
           }`}
+           aria-label="Halaman Selanjutnya"
         >
-          Selanjutnya
+          <span className="hidden md:inline">Selanjutnya</span>
+          <svg className="w-5 h-5 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
       </div>
     </div>
