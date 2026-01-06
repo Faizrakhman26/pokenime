@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { animeService } from '../../services/api';
 import AnimeCard from '../../components/AnimeCard';
+import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -46,6 +47,7 @@ const Home = () => {
 
   return (
     <div className="pb-20">
+      <SEO />
       
       {/* Hero Section */}
       {heroAnime && (
@@ -54,7 +56,7 @@ const Home = () => {
           <div className="absolute inset-0">
             <img 
               src={heroAnime.poster} 
-              alt="Hero Background" 
+              alt={`Banner ${heroAnime.title}`} 
               className="w-full h-full object-cover opacity-30 blur-sm scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
@@ -66,7 +68,7 @@ const Home = () => {
             <div className="flex flex-row gap-4 md:gap-8 items-stretch text-left">
                 {/* Poster: w-28 on mobile, w-48 on desktop */}
                 <div className="block w-28 sm:w-32 md:w-48 flex-shrink-0 rounded-lg overflow-hidden shadow-2xl border-2 border-white/10">
-                    <img src={heroAnime.poster} alt={heroAnime.title} className="w-full h-full object-cover aspect-[3/4]" />
+                    <img src={heroAnime.poster} alt={`Poster Anime ${heroAnime.title}`} className="w-full h-full object-cover aspect-[3/4]" />
                 </div>
                 
                 {/* Info Container: Side by side with poster on all screens */}

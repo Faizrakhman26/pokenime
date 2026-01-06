@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { animeService } from '../../services/api';
 import AnimeCard from '../../components/AnimeCard';
+import SEO from '../../components/SEO';
 
 const Completed = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,7 +63,10 @@ const Completed = () => {
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
-      
+      <SEO 
+        title="Anime Tamat" 
+        description="Koleksi lengkap anime yang sudah tamat (completed) subtitle Indonesia. Nonton marathon anime favoritmu sekarang." 
+      />
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl md:text-3xl font-black text-white border-l-4 border-blue-500 pl-4 uppercase tracking-tighter italic">

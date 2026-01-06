@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { animeService } from '../../../services/api';
 import AnimeCard from '../../../components/AnimeCard';
+import SEO from '../../../components/SEO';
 
 const AnimeDetail = () => {
   const { id } = useParams();
@@ -48,13 +50,48 @@ const AnimeDetail = () => {
     </div>
   );
 
+  // Construct description from synopsis
+  const synopsisText = data.synopsis?.paragraphs?.[0] || `Nonton anime ${data.title} subtitle Indonesia gratis.`;
+  const seoDescription = `Tonton anime ${data.title} episode terbaru subtitle Indonesia. Sinopsis: ${synopsisText}`.substring(0, 160) + '...';
+
+  // Schema Markup (JSON-LD) for Google Rich Snippets
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "TVSeries",
+    "name": data.title,
+    "image": data.poster,
+    "description": synopsisText,
+    "genre": data.genreList.map(g => g.title),
+    "startDate": data.aired, // Pastikan format tanggal sesuai jika memungkinkan, tapi string juga oke
+    "numberOfEpisodes": data.episodeList?.length,
+    "productionCompany": {
+      "@type": "Organization",
+      "name": data.studios
+    },
+    "aggregateRating": data.score ? {
+      "@type": "AggregateRating",
+      "ratingValue": data.score,
+      "bestRating": "10",
+      "ratingCount": "100" // Placeholder count karena API tidak menyediakan jumlah vote
+    } : undefined
+  };
+
   return (
     <div className="pt-20 pb-20 min-h-screen">
+      <SEO 
+        title={`Nonton ${data.title} Sub Indo`} 
+        description={seoDescription} 
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
+      </Helmet>
       {/* Background Banner Blur */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img 
           src={data.poster} 
-          alt="" 
+          alt={`Background Banner ${data.title}`} 
           className="w-full h-full object-cover opacity-10 blur-xl scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/80 to-dark/40" />
@@ -69,7 +106,7 @@ const AnimeDetail = () => {
              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-white/10 aspect-[3/4]">
                 <img 
                   src={data.poster} 
-                  alt={data.title} 
+                  alt={`Poster Anime ${data.title}`} 
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-2 right-2 bg-yellow-500 text-black font-black text-[10px] md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded-lg shadow-xl flex items-center gap-1">
@@ -87,7 +124,7 @@ const AnimeDetail = () => {
           {/* Content Column */}
           <div className="flex flex-col justify-center min-w-0">
             <h1 className="text-xl md:text-5xl font-black text-white mb-2 md:mb-4 leading-tight tracking-tight">
-              {data.title}
+              Nonton {data.title} Sub Indo
             </h1>
             <p className="text-xs md:text-lg text-gray-400 mb-4 md:mb-6 font-medium italic line-clamp-2 md:line-clamp-none">
               {data.japanese}
@@ -176,10 +213,20 @@ const AnimeDetail = () => {
            </Link>
         )}
 
-        {/* Synopsis */}
+        {/* Synopsis & SEO Content */}
         <div className="mb-12">
-          <h3 className="text-xl font-bold text-white mb-3 border-l-4 border-primary pl-3">Sinopsis</h3>
+          <h2 className="text-xl font-bold text-white mb-3 border-l-4 border-primary pl-3">
+            Sinopsis Anime {data.title}
+          </h2>
           <div className="text-gray-300 text-sm md:text-base leading-relaxed space-y-4">
+             {/* SEO Boilerplate Paragraph */}
+             <p className="text-gray-400">
+                Sedang mencari link <strong>nonton anime {data.title} sub indo</strong> gratis? Anda berada di tempat yang tepat. 
+                Pokenime menyediakan layanan streaming anime <strong>{data.title}</strong> dengan kualitas resolusi lengkap mulai dari HD 1080p, 720p, hingga paket hemat 480p dan 360p.
+                Simak sinopsis lengkap, jadwal rilis, dan daftar episode terbaru di bawah ini.
+             </p>
+             
+             {/* Actual API Synopsis */}
              {data.synopsis.paragraphs.length > 0 ? (
                 data.synopsis.paragraphs.map((p, idx) => (
                     <p key={idx}>{p}</p>
@@ -193,7 +240,9 @@ const AnimeDetail = () => {
         {/* Episode List */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-white border-l-4 border-primary pl-4">Daftar Episode</h3>
+            <h2 className="text-xl font-bold text-white border-l-4 border-primary pl-4">
+               Link Nonton {data.title} Sub Indo
+            </h2>
             <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">
               {data.episodeList?.length || 0} Episode
             </span>

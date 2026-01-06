@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { animeService } from '../../services/api';
+import SEO from '../../components/SEO';
 
 const Schedule = () => {
   const [scheduleData, setScheduleData] = useState([]);
@@ -54,7 +55,10 @@ const Schedule = () => {
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
-      
+      <SEO 
+        title="Jadwal Rilis Anime" 
+        description="Jadwal rilis anime terbaru setiap hari Senin sampai Minggu. Jangan lewatkan episode terbaru anime favoritmu." 
+      />
       {/* Header */}
       <div className="mb-12 text-center">
          <h1 className="text-4xl font-black text-white mb-4 italic tracking-tighter uppercase">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { animeService } from '../../../services/api';
+import SEO from '../../../components/SEO';
 
 const Watch = () => {
   const { episode } = useParams();
@@ -92,6 +93,10 @@ const Watch = () => {
 
   return (
     <div className="pt-20 pb-20 min-h-screen bg-dark">
+      <SEO 
+        title={`Nonton ${data.title} Sub Indo`} 
+        description={`Streaming dan download anime ${data.title} subtitle Indonesia gratis resolusi terbaik. Nonton anime sub indo tanpa iklan.`}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb & Title */}

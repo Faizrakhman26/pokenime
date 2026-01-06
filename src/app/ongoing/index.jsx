@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { animeService } from '../../services/api';
 import AnimeCard from '../../components/AnimeCard';
+import SEO from '../../components/SEO';
 
 const Ongoing = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,7 +93,10 @@ const Ongoing = () => {
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
-      
+      <SEO 
+        title="Anime Sedang Tayang" 
+        description="Daftar anime ongoing terbaru yang sedang tayang musim ini subtitle Indonesia. Update setiap hari di Pokenime." 
+      />
       {/* Header & Filter */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>

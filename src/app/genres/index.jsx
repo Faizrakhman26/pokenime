@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { animeService } from '../../services/api';
+import SEO from '../../components/SEO';
 
 const Genres = () => {
   const [genres, setGenres] = useState([]);
@@ -42,6 +43,10 @@ const Genres = () => {
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+      <SEO 
+        title="Daftar Genre Anime" 
+        description="Jelajahi berbagai genre anime menarik di Pokenime. Temukan genre favoritmu mulai dari Action, Romance, Isekai, dan banyak lagi." 
+      />
       <div className="mb-12 text-center">
          <h1 className="text-4xl font-black text-white mb-4 italic tracking-tighter uppercase">
             Jelajahi <span className="text-primary">Genre</span>

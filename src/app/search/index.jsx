@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { animeService } from '../../services/api';
 import AnimeCard from '../../components/AnimeCard';
+import SEO from '../../components/SEO';
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,7 +46,10 @@ const Search = () => {
 
   return (
     <div className="pt-24 pb-20 min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
+      <SEO 
+        title={query ? `Pencarian Anime: ${query}` : 'Cari Anime'} 
+        description="Cari dan temukan anime favoritmu subtitle Indonesia dengan mudah di Pokenime. Database anime terlengkap dan terupdate." 
+      />
       {/* Search Header */}
       <div className="mb-12 text-center">
          <h1 className="text-3xl md:text-4xl font-black text-white mb-6 uppercase italic tracking-tighter">

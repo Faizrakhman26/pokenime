@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { animeService } from '../../services/api';
+import SEO from '../../components/SEO';
 
 const Directory = () => {
   const [directoryData, setDirectoryData] = useState([]);
@@ -62,7 +63,10 @@ const Directory = () => {
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen relative">
-      
+      <SEO 
+        title="Daftar Semua Anime"
+        description="Jelajahi dan nonton ribuan judul anime subtitle Indonesia dalam database terlengkap kami. Temukan anime favoritmu dari A sampai Z."
+      />
       {/* Header */}
       <div className="mb-12 text-center">
          <h1 className="text-4xl font-black text-white mb-4 italic tracking-tighter uppercase">
